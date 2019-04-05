@@ -6,9 +6,9 @@
         "en": "Self-hosted photo gallery federated social network.",
         "fr": "Réseau social fédéré auto-hébergé de galeries de photos."
     },
-    "version": "1.0~ynh1",
-    "url": "https://example.com",
-    "license": "free",
+    "version": "0.1~ynh1",
+    "url": "https://anfora.app/",
+    "license": "AGPL-3.0-or-later",
     "maintainer": {
         "name": "yalh76"
     },

@@ -1,15 +1,16 @@
 # Anfora for YunoHost
 
 [![Integration level](https://dash.yunohost.org/integration/anfora.svg)](https://dash.yunohost.org/appci/app/anfora)  
-[![Install anfora with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=anfora)
+[![Build Status](https://ci-apps-dev.yunohost.org/jenkins/job/anfora_ynh%20(yalh76)/badge/icon)](https://ci-apps-dev.yunohost.org/jenkins/job/anfora_ynh%20(yalh76)/)  
+[![Install Anfora with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=anfora)
 
-> *This package allow you to install anfora quickly and simply on a YunoHost server.  
+> *This package allow you to install Anfora quickly and simply on a YunoHost server.  
 If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to know how to install and enjoy it.*
 
 ## Overview
 Self-hosted photo gallery federated social network.
 
-**Shipped version:** 0.1
+**Shipped version:** 0.1-2019-04-12
 
 ## Screenshots
 

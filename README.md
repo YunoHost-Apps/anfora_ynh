@@ -1,6 +1,6 @@
 # Anfora for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/anfora.svg)](https://dash.yunohost.org/appci/app/anfora) 
+[![Integration level](https://dash.yunohost.org/integration/anfora.svg)](https://dash.yunohost.org/appci/app/anfora)  
 [![Build Status](https://ci-apps-dev.yunohost.org/jenkins/job/anfora_ynh%20(yalh76)/badge/icon)](https://ci-apps-dev.yunohost.org/jenkins/job/anfora_ynh%20(yalh76)/)  
 [![Install Anfora with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=anfora)
 

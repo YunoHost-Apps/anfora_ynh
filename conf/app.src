@@ -1,5 +1,5 @@
-SOURCE_URL=url of app's source
-SOURCE_SUM=sha256 checksum
+SOURCE_URL=https://github.com/yalh76/anfora/archive/892f74fd813249483f79eb4ded9b977a0ed20a82.tar.gz
+SOURCE_SUM=daf4aa935333d3a5003c2fcd8b44e2308201a4a90331c600e687bc30caa8262d
 SOURCE_SUM_PRG=sha256sum
 SOURCE_FORMAT=tar.gz
 SOURCE_IN_SUBDIR=true

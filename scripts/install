@@ -110,21 +110,6 @@ ynh_setup_source "$final_path"
 ynh_setup_source "$final_path/src/client" client
 
 #=================================================
-# CREATE THE DATA DIRECTORY
-#=================================================
-ynh_print_info "Create the data directory..."
-
-# Define app's data directory
-datadir="/home/yunohost.app/${app}"
-
-# Create app folders
-mkdir -p "$datadir"
-mkdir -p "$datadir/uploads/avatars"
-mkdir -p "$datadir/uploads/max_resolution"
-
-ynh_app_setting_set $app datadir $datadir
-
-#=================================================
 # NGINX CONFIGURATION
 #=================================================
 ynh_print_info "Configuring nginx web server..."
@@ -144,6 +129,22 @@ ynh_system_user_create --username=$app --home_dir=$final_path
 
 #=================================================
 # SPECIFIC SETUP
+#=================================================
+# CREATE THE DATA DIRECTORY
+#=================================================
+ynh_print_info "Create the data directory..."
+
+# Define app's data directory
+datadir="/home/yunohost.app/${app}"
+ynh_app_setting_set $app datadir $datadir
+
+# Create app folders
+mkdir -p "$datadir"
+mkdir -p "$datadir/uploads/avatars"
+mkdir -p "$datadir/uploads/max_resolution"
+
+chown -R "$app": "$datadir"
+
 #=================================================
 # MODIFY A CONFIG FILE
 #=================================================

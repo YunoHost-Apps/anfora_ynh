@@ -36,6 +36,8 @@ admin_email=$(ynh_user_get_info $admin 'mail')
 
 app=$YNH_APP_INSTANCE_NAME
 
+datadir="/home/yunohost.app/${app}"
+
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
 #=================================================
@@ -60,6 +62,7 @@ ynh_app_setting_set $app language $language
 ynh_app_setting_set $app name $name
 ynh_app_setting_set $app salt_code $salt_code
 ynh_app_setting_set $app admin_email $admin_email
+ynh_app_setting_set $app datadir $datadir
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -133,10 +136,6 @@ ynh_system_user_create --username=$app --home_dir=$final_path
 # CREATE THE DATA DIRECTORY
 #=================================================
 ynh_print_info "Create the data directory..."
-
-# Define app's data directory
-datadir="/home/yunohost.app/${app}"
-ynh_app_setting_set $app datadir $datadir
 
 # Create app folders
 mkdir -p "$datadir"

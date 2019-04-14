@@ -110,14 +110,6 @@ ynh_print_info "Making sure dedicated system user exists..."
 ynh_system_user_create $app
 
 #=================================================
-# PHP-FPM CONFIGURATION
-#=================================================
-ynh_print_info "Upgrading php-fpm configuration..."
-
-# Create a dedicated php-fpm config
-ynh_add_fpm_config
-
-#=================================================
 # SPECIFIC UPGRADE
 #=================================================
 # ...

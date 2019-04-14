@@ -32,6 +32,7 @@ language=$YNH_APP_ARG_LANGUAGE
 password=$YNH_APP_ARG_PASSWORD
 name=$YNH_APP_ARG_NAME
 salt_code=$(ynh_string_random 30)
+secret=$(ynh_string_random 30)
 admin_email=$(ynh_user_get_info $admin 'mail')
 
 app=$YNH_APP_INSTANCE_NAME
@@ -61,6 +62,7 @@ ynh_app_setting_set $app is_public $is_public
 ynh_app_setting_set $app language $language
 ynh_app_setting_set $app name $name
 ynh_app_setting_set $app salt_code $salt_code
+ynh_app_setting_set $app secret $secret
 ynh_app_setting_set $app admin_email $admin_email
 ynh_app_setting_set $app datadir $datadir
 
@@ -150,27 +152,23 @@ chown -R "$app": "$datadir"
 
 # Configure Anfora-web
 my_config="$final_path/src/config/my_config.yaml"
-cp "../conf/my_config.yaml" "$my_config"
+cp -f "../conf/my_config.yaml" "$my_config"
 
 ynh_replace_string "__NAME__" "$name" "$my_config"
 ynh_replace_string "__DOMAIN__" "$domain" "$my_config"
 ynh_replace_string "__DATADIR__" "$datadir" "$my_config"
 ynh_replace_string "__FINAL_PATH__" "$final_path" "$my_config"
 ynh_replace_string "__SALT_CODE__" "$salt_code" "$my_config"
+ynh_replace_string "__SECRET__" "$secret" "$my_config"
 ynh_replace_string "__DB_USER__" "$db_user" "$my_config"
 ynh_replace_string "__DB_PWD__" "$db_pwd" "$my_config"
 ynh_replace_string "__DB_NAME__" "$db_name" "$my_config"
 
-# Configure Anfora-streaming
-mkdir "$final_path/src/streaming"
+# Configure web interface build
+my_env="$final_path/src/client/.env"
+cp -f "../conf/.env" "$my_env"
 
-index_js="$final_path/src/streaming/index.js"
-cp "../conf/index.js" $index_js
-
-ynh_replace_string "__DB_USER__" "$db_user" "$index_js"
-ynh_replace_string "__DB_NAME__" "$db_name" "$index_js"
-ynh_replace_string "__DB_PWD__" "$db_pwd" "$index_js"
-ynh_replace_string "__STREAMING_PORT__" "$streaming_port" "$index_js"
+ynh_replace_string "__DOMAIN__" "$domain" "$my_env"
 
 # Configure Anfora-queue
 huey_consumer="$final_path/src/huey_consumer.py"
@@ -219,18 +217,6 @@ pushd "$final_path/src/client"
     sudo -u $app env PATH=$PATH yarn build
 popd
 
-# Install streaming
-pushd "$final_path/src"
-    ynh_use_nodejs    
-    sudo -u $app env PATH=$PATH npm install express
-    sudo -u $app env PATH=$PATH npm install cors
-    sudo -u $app env PATH=$PATH npm install sse-express@next
-    sudo -u $app env PATH=$PATH npm install passport
-    sudo -u $app env PATH=$PATH npm install passport-http-bearer
-    sudo -u $app env PATH=$PATH npm install redis
-    sudo -u $app env PATH=$PATH npm install pg
-popd
-
 #=================================================
 # SETUP SYSTEMD
 #=================================================
@@ -239,10 +225,8 @@ ynh_print_info "Configuring a systemd service..."
 # Create a dedicated systemd config
 ynh_use_nodejs
 ynh_replace_string "__PORT__" "$port" "../conf/anfora-web.service"
-ynh_replace_string "__NODEJS_PATH__" "$nodejs_path" "../conf/anfora-streaming.service"
 ynh_add_systemd_config "$app-web"       "anfora-web.service"
 ynh_add_systemd_config "$app-queue"       "anfora-queue.service"
-ynh_add_systemd_config "$app-streaming"       "anfora-streaming.service"
 
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
@@ -269,7 +253,6 @@ chown -R "$app":root "$datadir"
 
 yunohost service add "$app-web"
 yunohost service add "$app-queue"
-yunohost service add "$app-streaming"
 
 #=================================================
 # SETUP SSOWAT
@@ -299,8 +282,6 @@ ynh_systemd_action --action=start --service_name=${app}-web --log_path=systemd
 #--line_match="Started ${app}-web"
 ynh_systemd_action --action=start --service_name=${app}-queue --log_path=systemd
 #--line_match="Started ${app}-worker"
-ynh_systemd_action --action=start --service_name=${app}-streaming --log_path=systemd
-#--line_match="Started ${app}-streaming"
 
 #=================================================
 # END OF SCRIPT

@@ -119,6 +119,8 @@ datadir="/home/yunohost.app/${app}"
 
 # Create app folders
 mkdir -p "$datadir"
+mkdir -p "$datadir/uploads/avatars"
+mkdir -p "$datadir/uploads/max_resolution"
 
 ynh_app_setting_set $app datadir $datadir
 

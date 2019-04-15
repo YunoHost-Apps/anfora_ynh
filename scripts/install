@@ -54,7 +54,6 @@ ynh_webpath_register $app $domain $path_url
 ynh_print_info "Storing installation settings..."
 
 ynh_app_setting_set $app domain $domain
-ynh_app_setting_set $app port $port
 ynh_app_setting_set $app path $path_url
 ynh_app_setting_set $app admin $admin
 ynh_app_setting_set $app is_public $is_public
@@ -150,6 +149,7 @@ cp -f "../conf/my_config.yaml" "$my_config"
 
 ynh_replace_string "__NAME__" "$name" "$my_config"
 ynh_replace_string "__DOMAIN__" "$domain" "$my_config"
+ynh_replace_string "__PORT__" "$port" "$my_config"
 ynh_replace_string "__DATADIR__" "$datadir" "$my_config"
 ynh_replace_string "__FINAL_PATH__" "$final_path" "$my_config"
 ynh_replace_string "__DB_USER__" "$db_user" "$my_config"

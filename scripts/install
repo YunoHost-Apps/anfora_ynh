@@ -31,8 +31,6 @@ is_public=$YNH_APP_ARG_IS_PUBLIC
 language=$YNH_APP_ARG_LANGUAGE
 password=$YNH_APP_ARG_PASSWORD
 name=$YNH_APP_ARG_NAME
-salt_code=$(ynh_string_random 30)
-secret=$(ynh_string_random 30)
 admin_email=$(ynh_user_get_info $admin 'mail')
 
 app=$YNH_APP_INSTANCE_NAME
@@ -56,13 +54,12 @@ ynh_webpath_register $app $domain $path_url
 ynh_print_info "Storing installation settings..."
 
 ynh_app_setting_set $app domain $domain
+ynh_app_setting_set $app port $port
 ynh_app_setting_set $app path $path_url
 ynh_app_setting_set $app admin $admin
 ynh_app_setting_set $app is_public $is_public
 ynh_app_setting_set $app language $language
 ynh_app_setting_set $app name $name
-ynh_app_setting_set $app salt_code $salt_code
-ynh_app_setting_set $app secret $secret
 ynh_app_setting_set $app admin_email $admin_email
 ynh_app_setting_set $app datadir $datadir
 
@@ -74,11 +71,8 @@ ynh_app_setting_set $app datadir $datadir
 ynh_print_info "Configuring firewall..."
 
 # Find a free port
-port=$(ynh_find_port 3000)
+port=$(ynh_find_port 8095)
 ynh_app_setting_set $app port $port
-
-streaming_port=$(ynh_find_port 4000)
-ynh_app_setting_set $app streaming_port $streaming_port
 
 #=================================================
 # INSTALL DEPENDENCIES
@@ -122,7 +116,7 @@ ynh_print_info "Configuring nginx web server..."
 ### `ynh_add_nginx_config` will use the file conf/nginx.conf
 
 # Create a dedicated nginx config
-ynh_add_nginx_config "datadir streaming_port"
+ynh_add_nginx_config "datadir"
 
 #=================================================
 # CREATE DEDICATED USER
@@ -158,8 +152,6 @@ ynh_replace_string "__NAME__" "$name" "$my_config"
 ynh_replace_string "__DOMAIN__" "$domain" "$my_config"
 ynh_replace_string "__DATADIR__" "$datadir" "$my_config"
 ynh_replace_string "__FINAL_PATH__" "$final_path" "$my_config"
-ynh_replace_string "__SALT_CODE__" "$salt_code" "$my_config"
-ynh_replace_string "__SECRET__" "$secret" "$my_config"
 ynh_replace_string "__DB_USER__" "$db_user" "$my_config"
 ynh_replace_string "__DB_PWD__" "$db_pwd" "$my_config"
 ynh_replace_string "__DB_NAME__" "$db_name" "$my_config"
@@ -206,7 +198,11 @@ pushd "$final_path"
 popd
 
 pushd "$final_path/src"
-	sudo -u $app ../ve3/bin/pipenv run python commands.py -s --config config/my_config.yaml
+	sudo -u $app ../ve3/bin/pipenv run python commands.py -s --config $my_config
+	salt_code=$(grep -oPi "SALT_CODE ?= ?\"\K[^\"]*" settings.py)
+	ynh_app_setting_set $app salt_code $salt_code
+	secret=$(grep -oPi "SECRET ?= ?\"\K[^\"]*" settings.py)
+	ynh_app_setting_set $app secret $secret
 	sudo -u $app ../ve3/bin/pipenv run python commands.py -d
 	sudo -u $app ../ve3/bin/pipenv run python commands.py -u --username "$admin" --password "$password" --email "$admin_email" --is_admin "True"
 popd

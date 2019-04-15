@@ -275,9 +275,10 @@ systemctl reload nginx
 #=================================================
 ynh_print_info "Starting Anfora services..."
 
-ynh_systemd_action --action=start --service_name=${app}-web --log_path=systemd
-#--line_match="Started ${app}-web"
-ynh_systemd_action --action=start --service_name=${app}-queue --log_path=systemd
+ynh_systemd_action --action=start --service_name=${app}-web --log_path=systemd --line_match="Started ${app} Anfora Server"
+
+# Queue service not implemented for now
+#ynh_systemd_action --action=start --service_name=${app}-queue --log_path=systemd
 #--line_match="Started ${app}-worker"
 
 #=================================================

@@ -163,6 +163,7 @@ ynh_replace_string "__SECRET__" "$secret" "$my_config"
 ynh_replace_string "__DB_USER__" "$db_user" "$my_config"
 ynh_replace_string "__DB_PWD__" "$db_pwd" "$my_config"
 ynh_replace_string "__DB_NAME__" "$db_name" "$my_config"
+ynh_replace_string "__APP__" "$app" "$my_config"
 
 # Configure web interface build
 my_env="$final_path/src/client/.env"

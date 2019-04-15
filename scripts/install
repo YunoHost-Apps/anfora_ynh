@@ -151,8 +151,8 @@ chown -R "$app": "$datadir"
 #=================================================
 
 # Configure Anfora-web
-my_config="$final_path/src/settings.py"
-cp -f "../conf/settings.py" "$my_config"
+my_config="$final_path/src/config/my_config.yaml"
+cp -f "../conf/my_config.yaml" "$my_config"
 
 ynh_replace_string "__NAME__" "$name" "$my_config"
 ynh_replace_string "__DOMAIN__" "$domain" "$my_config"
@@ -205,6 +205,7 @@ pushd "$final_path"
 popd
 
 pushd "$final_path/src"
+	sudo -u $app ../ve3/bin/pipenv run python commands.py -s --config config/my_config.yaml
 	sudo -u $app ../ve3/bin/pipenv run python commands.py -d
 	sudo -u $app ../ve3/bin/pipenv run python commands.py -u --username "$admin" --password "$password" --email "$admin_email" --is_admin "True"
 popd
@@ -222,6 +223,7 @@ popd
 ynh_print_info "Configuring a systemd service..."
 
 # Create a dedicated systemd config
+ynh_use_nodejs
 ynh_replace_string "__PORT__" "$port" "../conf/anfora-web.service"
 ynh_add_systemd_config "$app-web"       "anfora-web.service"
 ynh_add_systemd_config "$app-queue"       "anfora-queue.service"

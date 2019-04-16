@@ -74,12 +74,6 @@ ynh_system_user_create $app
 chown -R root: $final_path
 
 #=================================================
-# RESTORE THE PHP-FPM CONFIGURATION
-#=================================================
-
-ynh_restore_file "/etc/php/7.0/fpm/pool.d/$app.conf"
-
-#=================================================
 # SPECIFIC RESTORATION
 #=================================================
 # REINSTALL DEPENDENCIES
@@ -127,11 +121,10 @@ ynh_restore_file "/etc/logrotate.d/$app"
 #=================================================
 # GENERIC FINALIZATION
 #=================================================
-# RELOAD NGINX AND PHP-FPM
+# RELOAD NGINX
 #=================================================
-ynh_print_info "Reloading nginx web server and php-fpm..."
+ynh_print_info "Reloading nginx web server..."
 
-systemctl reload php7.0-fpm
 systemctl reload nginx
 
 #=================================================

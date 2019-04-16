@@ -49,13 +49,6 @@ ynh_print_info "Backing up nginx web server configuration..."
 ynh_backup "/etc/nginx/conf.d/$domain.d/$app.conf"
 
 #=================================================
-# BACKUP THE PHP-FPM CONFIGURATION
-#=================================================
-ynh_print_info "Backing up php-fpm configuration..."
-
-ynh_backup "/etc/php/7.0/fpm/pool.d/$app.conf"
-
-#=================================================
 # BACKUP THE MYSQL DATABASE
 #=================================================
 ynh_print_info "Backing up the MySQL database..."

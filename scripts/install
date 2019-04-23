@@ -220,7 +220,6 @@ popd
 ynh_print_info "Configuring a systemd service..."
 
 # Create a dedicated systemd config
-ynh_use_nodejs
 ynh_replace_string "__PORT__" "$port" "../conf/anfora-web.service"
 ynh_add_systemd_config "$app-web"       "anfora-web.service"
 ynh_add_systemd_config "$app-queue"       "anfora-queue.service"

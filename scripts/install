@@ -7,7 +7,7 @@
 #=================================================
 
 source _common.sh
-source ynh_add_secure_repos__3
+source ynh_add_extra_apt_repos__3
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -220,7 +220,6 @@ popd
 ynh_print_info "Configuring a systemd service..."
 
 # Create a dedicated systemd config
-ynh_use_nodejs
 ynh_replace_string "__PORT__" "$port" "../conf/anfora-web.service"
 ynh_add_systemd_config "$app-web"       "anfora-web.service"
 ynh_add_systemd_config "$app-queue"       "anfora-queue.service"

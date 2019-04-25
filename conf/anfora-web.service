@@ -1,0 +1,14 @@
+[Unit]
+Description=__APP__ Anfora Server
+After=network.target
+
+[Service]
+Type=simple
+User=__APP__
+WorkingDirectory=__FINALPATH__/src
+ExecStart=__FINALPATH__/ve3/bin/pipenv run python main.py
+TimeoutSec=15
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,6 @@
+SOURCE_URL=https://github.com/anforaProject/client/archive/f2642d840d0b0c6dc1de1841f306e2fa54db859a.tar.gz
+SOURCE_SUM=11ea24eeb8ab69d411411b9ab133eea0232e8cb4f9ca0634681122fcd40a5ffd
+SOURCE_SUM_PRG=sha256sum
+SOURCE_FORMAT=tar.gz
+SOURCE_IN_SUBDIR=true
+SOURCE_FILENAME=

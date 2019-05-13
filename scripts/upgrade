@@ -148,8 +148,8 @@ pushd "$final_path"
 popd
 
 pushd "$final_path/src"
-	# disable for now because can't be automated, adsking a question
-	# sudo -u $app ../ve3/bin/pipenv run python commands.py -m
+	# disable for now because can't be automated, asking a question
+	# sudo -u $app ../ve3/bin/pipenv run python commands.py --migrate --quiet
 popd
 
 # Build web interface

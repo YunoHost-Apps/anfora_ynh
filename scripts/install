@@ -198,13 +198,14 @@ pushd "$final_path"
 popd
 
 pushd "$final_path/src"
-	sudo -u $app ../ve3/bin/pipenv run python commands.py -s --config $my_config
+	sudo -u $app ../ve3/bin/pipenv run python commands.py --settings --config $my_config
 	salt_code=$(grep -oPi "SALT_CODE ?= ?\"\K[^\"]*" settings.py)
 	ynh_app_setting_set $app salt_code $salt_code
 	secret=$(grep -oPi "SECRET ?= ?\"\K[^\"]*" settings.py)
 	ynh_app_setting_set $app secret $secret
-	sudo -u $app ../ve3/bin/pipenv run python commands.py -d
-	sudo -u $app ../ve3/bin/pipenv run python commands.py -u --username "$admin" --password "$password" --email "$admin_email" --is_admin "True"
+	sudo -u $app ../ve3/bin/pipenv run python commands.py --syncdb
+	# sudo -u $app ../ve3/bin/pipenv run python commands.py --migrate --quiet
+	sudo -u $app ../ve3/bin/pipenv run python commands.py --usercreate --username "$admin" --password "$password" --email "$admin_email" --is_admin "True"
 popd
 
 # Build web interface

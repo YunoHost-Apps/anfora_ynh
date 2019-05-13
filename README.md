@@ -18,7 +18,7 @@ Self-hosted photo gallery federated social network.
 
 ## Documentation
 
- * Official documentation: https://docs.anfora.app/
+ * Official documentation: https://anfora.app/documentation/
 
 ## YunoHost specific features
 

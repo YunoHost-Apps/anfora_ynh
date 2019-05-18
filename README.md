@@ -9,7 +9,7 @@ If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to
 ## Overview
 Self-hosted photo gallery federated social network.
 
-**Shipped version:** 0.1-2019-04-16
+**Shipped version:** 0.1-2019-05-18
 
 ## Screenshots
 

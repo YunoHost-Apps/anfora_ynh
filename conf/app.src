@@ -1,5 +1,5 @@
-SOURCE_URL=https://github.com/anforaProject/anfora/archive/07e1997c7070e66a6d1ce9e7d1029271c7a36478.tar.gz
-SOURCE_SUM=cf076cb82da9c8040d6a76c26acf692040d77631209809965a7302c55116a130
+SOURCE_URL=https://github.com/anforaProject/anfora/archive/ac8636545543b7f2b9bb807eab0fd48cb7a63339.tar.gz
+SOURCE_SUM=842553023bfeaa228c60af924126ae2c4e5ad443155b1a2c5e79af5e63fa3765
 SOURCE_SUM_PRG=sha256sum
 SOURCE_FORMAT=tar.gz
 SOURCE_IN_SUBDIR=true

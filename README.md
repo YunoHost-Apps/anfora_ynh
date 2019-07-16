@@ -11,6 +11,10 @@ Self-hosted photo gallery federated social network.
 
 **Shipped version:** 0.1-2019-05-18
 
+## Important points to read before installing
+
+1. **Anfora** require a dedicated **root domain**, eg. anfora.domain.tld
+
 ## Screenshots
 
 ![](https://raw.githubusercontent.com/anforaProject/anfora/master/images/profile_view.png)

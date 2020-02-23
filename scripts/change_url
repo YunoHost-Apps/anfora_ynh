@@ -12,6 +12,7 @@ source /usr/share/yunohost/helpers
 #=================================================
 # RETRIEVE ARGUMENTS
 #=================================================
+ynh_print_info --message="Retrieve arguments from the manifest"
 
 old_domain=$YNH_APP_OLD_DOMAIN
 old_path=$YNH_APP_OLD_PATH
@@ -35,6 +36,23 @@ final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 #db_pwd=$(ynh_app_setting_get --app=$app --key=db_pwd)
 
 #=================================================
+# BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
+#=================================================
+ynh_print_info --message="Backing up the app before changing its url (may take a while)..."
+
+# Backup the current version of the app
+ynh_backup_before_upgrade
+ynh_clean_setup () {
+	# Remove the new domain config file, the remove script won't do it as it doesn't know yet its location.
+	ynh_secure_remove --file="/etc/nginx/conf.d/$new_domain.d/$app.conf"
+
+	# restore it if the upgrade fails
+	ynh_restore_upgradebackup
+}
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
+
+#=================================================
 # CHECK WHICH PARTS SHOULD BE CHANGED
 #=================================================
 
@@ -55,13 +73,13 @@ fi
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
-ynh_print_info --message="Stoppping Anfora services..."
+ynh_print_info --message="Stopping a systemd service..."
 
-ynh_systemd_action --service_name=$app-web --action=stop --log_path=systemd
+ynh_systemd_action --service_name=$app-web --action="stop" --log_path=systemd
 #--line_match="Started $app Anfora Server"
 
 # Queue service not implemented for now
-#ynh_systemd_action --service_name=$app-queue --action=stop --log_path=systemd
+#ynh_systemd_action --service_name=$app-queue --action="stop" --log_path=systemd
 #--line_match="Started $app-worker"
 
 #=================================================
@@ -98,6 +116,7 @@ fi
 #=================================================
 # MODIFY A CONFIG FILE
 #=================================================
+ynh_print_info --message="Modifying a config file..."
 
 ynh_replace_string --match_string="$old_domain" --replace_string="$new_domain" --target_file="$final_path/src/settings.py"
 
@@ -106,6 +125,7 @@ ynh_replace_string --match_string="$old_domain" --replace_string="$new_domain" -
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
 #=================================================
+ynh_print_info --message="Storing the config file checksum..."
 
 ynh_backup_if_checksum_is_different --file="$final_path/src/settings.py"
 # Recalculate and store the checksum of the file for the next upgrade.
@@ -114,6 +134,7 @@ ynh_store_file_checksum --file="$final_path/src/settings.py"
 #=================================================
 # INSTALL ANFORA
 #=================================================
+ynh_print_info --message="Installing Anfora..."
 
 # Build web interface
 pushd "$final_path/src/client"
@@ -129,10 +150,10 @@ popd
 #=================================================
 ynh_print_info --message="Starting a systemd service..."
 
-ynh_systemd_action --service_name=$app-web --action=start --log_path=systemd --line_match="Started $app Anfora Server"
+ynh_systemd_action --service_name=$app-web --action="start" --log_path=systemd --line_match="Started $app Anfora Server"
 
 # Queue service not implemented for now
-#ynh_systemd_action --service_name=$app-queue --action=start --log_path=systemd
+#ynh_systemd_action --service_name=$app-queue --action="start" --log_path=systemd
 #--line_match="Started $app-worker"
 
 #=================================================

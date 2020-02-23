@@ -13,6 +13,7 @@ source /usr/share/yunohost/helpers
 #=================================================
 # MANAGE SCRIPT FAILURE
 #=================================================
+ynh_print_info --message="Managing script failure..."
 
 ynh_clean_setup () {
 	ynh_clean_check_starting
@@ -23,6 +24,7 @@ ynh_abort_if_errors
 #=================================================
 # RETRIEVE ARGUMENTS FROM THE MANIFEST
 #=================================================
+ynh_print_info --message="Retrieving arguments from the manifest..."
 
 domain=$YNH_APP_ARG_DOMAIN
 path_url="/"
@@ -69,7 +71,7 @@ ynh_app_setting_set --app=$app --key=datadir --value=$datadir
 #=================================================
 ynh_print_info --message="Configuring firewall..."
 
-# Find a free port
+# Find an available port
 port=$(ynh_find_port --port=8095)
 ynh_app_setting_set --app=$app --key=port --value=$port
 
@@ -89,9 +91,9 @@ ynh_install_extra_app_dependencies --repo="deb https://dl.yarnpkg.com/debian/ st
 #=================================================
 ynh_print_info --message="Creating a PostgreSQL database..."
 
-db_name=$(ynh_sanitize_dbid $app)
+db_name=$(ynh_sanitize_dbid --db_name=$app)
 db_user=$db_name
-db_pwd=$(ynh_string_random 30)
+db_pwd=$(ynh_string_random --length=30)
 ynh_app_setting_set --app=$app --key=db_name --value=$db_name
 ynh_app_setting_set --app=$app --key=db_pwd --value=$db_pwd
 ynh_psql_test_if_first_run
@@ -111,8 +113,6 @@ ynh_setup_source --dest_dir="$final_path/src/client" --source_id=client
 # NGINX CONFIGURATION
 #=================================================
 ynh_print_info --message="Configuring nginx web server..."
-
-### `ynh_add_nginx_config` will use the file conf/nginx.conf
 
 # Create a dedicated nginx config
 ynh_add_nginx_config "datadir"
@@ -142,6 +142,7 @@ chown -R "$app": "$datadir"
 #=================================================
 # MODIFY A CONFIG FILE
 #=================================================
+ynh_print_info --message="Modifying a config file..."
 
 # Configure Anfora-web
 my_config="$final_path/src/config/my_config.yaml"
@@ -228,6 +229,7 @@ ynh_add_systemd_config --service="$app-queue"       --template="anfora-queue.ser
 #=================================================
 # STORE THE CONFIG FILE CHECKSUM
 #=================================================
+ynh_print_info --message="Storing the config file checksum..."
 
 # Calculate and store the config file checksum into the app settings
 ynh_store_file_checksum --file="$final_path/src/settings.py"
@@ -237,6 +239,7 @@ ynh_store_file_checksum --file="$final_path/src/settings.py"
 #=================================================
 # SECURE FILES AND DIRECTORIES
 #=================================================
+ynh_print_info --message="Securing files and directories..."
 
 # Set permissions to app files
 chown -R "$app":root "$final_path"
@@ -245,11 +248,12 @@ chown -R "$app":root "$final_path"
 chown -R "$app":root "$datadir"
 
 #=================================================
-# ADVERTISE SERVICE IN ADMIN PANEL
+# INTEGRATE SERVICE IN YUNOHOST
 #=================================================
+ynh_print_info --message="Integrating service in YunoHost..."
 
-yunohost service add "$app-web"
-yunohost service add "$app-queue"
+yunohost service add "$app-web" --description "Anfora web service"
+yunohost service add "$app-queue" --description "Anfora queue service"
 
 #=================================================
 # START SYSTEMD SERVICE
@@ -259,7 +263,7 @@ ynh_print_info --message="Starting a systemd service..."
 ynh_systemd_action --service_name=$app-web --action="start" --log_path=systemd --line_match="Started $app Anfora Server"
 
 # Queue service not implemented for now
-#ynh_systemd_action --service_name=$app-queue --action=start --log_path=systemd
+#ynh_systemd_action --service_name=$app-queue --action="start" --log_path=systemd
 #--line_match="Started $app-worker"
 
 #=================================================

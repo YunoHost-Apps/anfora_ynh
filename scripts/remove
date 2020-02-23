@@ -25,16 +25,17 @@ final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 #=================================================
 # STANDARD REMOVE
 #=================================================
-# REMOVE SERVICE FROM ADMIN PANEL
+# REMOVE SERVICE INTEGRATION IN YUNOHOST
 #=================================================
+ynh_print_info --message="Removing service integration in YunoHost..."
 
-# Remove a service from the admin panel, added by `yunohost service add`
-if yunohost service status "$app-web" >/dev/null 2>&1
+# Remove the service from the list of services known by Yunohost (added from `yunohost service add`)
+if ynh_exec_warn_less yunohost service status "$app-web" >/dev/null
 then
 	ynh_print_info --message="Removing $app-web service"
 	yunohost service remove "$app-web"
 fi
-if yunohost service status "$app-queue" >/dev/null 2>&1
+if ynh_exec_warn_less yunohost service status "$app-queue" >/dev/null
 then
 	ynh_print_info --message="Removing $app-queue service"
 	yunohost service remove "$app-queue"
@@ -43,7 +44,7 @@ fi
 #=================================================
 # STOP AND REMOVE SERVICE
 #=================================================
-ynh_print_info --message="Stopping and removing the systemd service"
+ynh_print_info --message="Stopping and removing the systemd service..."
 
 # Remove the dedicated systemd config
 ynh_remove_systemd_config --service="$app-web"
@@ -52,7 +53,7 @@ ynh_remove_systemd_config --service="$app-queue"
 #=================================================
 # REMOVE THE POSTGRESQL DATABASE
 #=================================================
-ynh_print_info --message="Removing the PostgreSQL database"
+ynh_print_info --message="Removing the PostgreSQL database..."
 
 # Remove a database if it exists, along with the associated user
 ynh_psql_remove_db --db_user="$db_user" --db_name="$db_name" 
@@ -60,7 +61,7 @@ ynh_psql_remove_db --db_user="$db_user" --db_name="$db_name"
 #=================================================
 # REMOVE DEPENDENCIES
 #=================================================
-ynh_print_info --message="Removing dependencies"
+ynh_print_info --message="Removing dependencies..."
 
 # Remove metapackage and its dependencies
 ynh_remove_app_dependencies
@@ -70,7 +71,7 @@ ynh_remove_nodejs
 #=================================================
 # REMOVE APP MAIN DIR
 #=================================================
-ynh_print_info --message="Removing app main directory"
+ynh_print_info --message="Removing app main directory..."
 
 # Remove the app directory securely
 ynh_secure_remove --file="$final_path"
@@ -78,7 +79,7 @@ ynh_secure_remove --file="$final_path"
 #=================================================
 # REMOVE NGINX CONFIGURATION
 #=================================================
-ynh_print_info --message="Removing nginx web server configuration"
+ynh_print_info --message="Removing nginx web server configuration..."
 
 # Remove the dedicated nginx config
 ynh_remove_nginx_config
@@ -86,10 +87,11 @@ ynh_remove_nginx_config
 #=================================================
 # CLOSE A PORT
 #=================================================
+ynh_print_info --message="Closing a port..."
 
 if yunohost firewall list | grep -q "\- $port$"
 then
-	ynh_print_info --message="Closing port $port"
+	ynh_print_info --message="Closing port $port..."
 	ynh_exec_warn_less yunohost firewall disallow TCP $port
 fi
 
@@ -98,7 +100,7 @@ fi
 #=================================================
 # REMOVE DEDICATED USER
 #=================================================
-ynh_print_info --message="Removing the dedicated system user"
+ynh_print_info --message="Removing the dedicated system user..."
 
 # Delete a system user
 ynh_system_user_delete --username=$app

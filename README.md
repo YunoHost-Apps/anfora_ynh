@@ -11,6 +11,10 @@ Self-hosted photo gallery federated social network.
 
 **Shipped version:** 0.1-2019-05-18
 
+## Important points to read before installing
+
+1. **Anfora** require a dedicated **root domain**, eg. anfora.domain.tld
+
 ## Screenshots
 
 ![](https://raw.githubusercontent.com/anforaProject/anfora/master/images/profile_view.png)
@@ -25,7 +29,7 @@ Self-hosted photo gallery federated social network.
 
 * x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/anfora%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/anfora/)
 * ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/anfora%20%28Apps%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/anfora/)
-* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/anfora%20%28Apps%29.svg)](https://ci-stretch.nohost.me/ci/apps/anfora/)
+
 
 ## Links
 
@@ -39,7 +43,6 @@ Self-hosted photo gallery federated social network.
 Developers info
 ----------------
 
-**Only if you want to use a testing branch for coding, instead of merging directly into master.**
 Please do your pull request to the [testing branch](https://github.com/YunoHost-Apps/anfora_ynh/tree/testing).
 
 To try the testing branch, please proceed like that.

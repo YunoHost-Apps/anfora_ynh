@@ -8,7 +8,6 @@
 
 #Keep this path for calling _common.sh inside the execution's context of backup and restore scripts
 source ../settings/scripts/_common.sh
-source ../settings/scripts/ynh_add_extra_apt_repos__3
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -100,7 +99,7 @@ ynh_print_info --message="Restoring the PostgreSQL database..."
 
 ynh_psql_test_if_first_run
 ynh_psql_setup_db --db_user=$db_user --db_name=$db_name --db_pwd=$db_pwd
-ynh_psql_execute_file_as_root --file="./db.sql" --database=$db_name
+ynh_psql_execute_file_as_root --file="./db.sql" --database="$db_name"
 
 #=================================================
 # CREATE THE DATA DIRECTORY

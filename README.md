@@ -1,6 +1,6 @@
 # Anfora for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/anfora.svg)](https://dash.yunohost.org/appci/app/anfora)  
+[![Integration level](https://dash.yunohost.org/integration/anfora.svg)](https://dash.yunohost.org/appci/app/anfora) ![](https://ci-apps.yunohost.org/ci/badges/anfora.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/anfora.maintain.svg)  
 [![Install Anfora with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=anfora)
 
 > *This package allow you to install Anfora quickly and simply on a YunoHost server.  

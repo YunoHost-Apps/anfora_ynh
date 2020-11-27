@@ -11,6 +11,8 @@ Self-hosted photo gallery federated social network.
 
 **Shipped version:** 0.1-2019-05-18
 
+**Package and project status**: Anfora is under developement and rework, it is not considered as stable and not recommanded for production right now. See: https://github.com/anforaProject/anfora/issues/54#issuecomment-732168373
+
 ## Important points to read before installing
 
 1. **Anfora** require a dedicated **root domain**, eg. anfora.domain.tld
